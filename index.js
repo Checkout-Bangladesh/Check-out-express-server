@@ -32,8 +32,21 @@ async function run() {
     const restaurantCollection = client
       .db("Checkout")
       .collection("restaurants");
+
     app.get("/allrestaurants", async (req, res) => {
       const query = {};
+      const cursor = restaurantCollection.find(query);
+      const restaurants = await cursor.toArray();
+      res.send(restaurants);
+    });
+
+    app.get("/restaurents", async (req, res) => {
+      const query = {
+        location: "Mohammedpur",
+        lowestPrice: { $lte: 200 },
+        highestPrice: { $gte: 1000 },
+        mainFoods: { $in: ["Fries"] },
+      };
       const cursor = restaurantCollection.find(query);
       const restaurants = await cursor.toArray();
       res.send(restaurants);
