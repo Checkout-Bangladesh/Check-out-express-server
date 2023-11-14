@@ -7,6 +7,7 @@ require("dotenv").config();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.send("The server is running");
@@ -48,6 +49,26 @@ async function run() {
         mainFoods: { $in: ["Fries"] },
       };
       const cursor = restaurantCollection.find(query);
+      const restaurants = await cursor.toArray();
+      res.send(restaurants);
+    });
+
+    /*Getting the resturants depending on User defined query */
+    app.post("/getRestaurents", async (req, res) => {
+      if (!req.body) {
+        return res.send("No request body found");
+      }
+
+      const { foodKeys, location, startingPrice, highestPrice } = req.body;
+
+      const query = {
+        location: location,
+        lowestPrice: { $lte: startingPrice },
+        highestPrice: { $gte: highestPrice },
+        mainFoods: { $in: foodKeys },
+      };
+      const limit = 10;
+      const cursor = restaurantCollection.find(query).limit(limit);
       const restaurants = await cursor.toArray();
       res.send(restaurants);
     });
