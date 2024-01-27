@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 
 app.use(cors());
@@ -71,6 +71,13 @@ async function run() {
       const cursor = restaurantCollection.find(query).limit(limit);
       const restaurants = await cursor.toArray();
       res.send(restaurants);
+    });
+
+    app.get("/restaurentDetails", async (req, res) => {
+      const id = req.query.id;
+      const query = { _id: new ObjectId(id) };
+      const rest_details = await restaurantCollection.findOne(query);
+      res.send(rest_details);
     });
   } finally {
   }
