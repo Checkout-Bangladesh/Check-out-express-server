@@ -38,6 +38,10 @@ async function run() {
       .collection("restaurants");
     const menuCollection = client.db("Checkout").collection("foodmenu");
 
+    const socialMedia = client.db("Checkout").collection("social");
+
+    const usersCollection = client.db("Checkout").collection("users");
+
     /**
      * API's
      */
@@ -100,6 +104,12 @@ async function run() {
       const newMenu = req.body;
       const add_food_menu_db = await menuCollection.insertOne(newMenu);
       res.send(add_food_menu_db);
+    });
+
+    app.post("/addsocial", async (req, res) => {
+      const newSocial = req.body;
+      const add_social_info_db = await socialMedia.insertOne(newSocial);
+      res.send(add_social_info_db);
     });
   } finally {
   }
