@@ -111,6 +111,25 @@ async function run() {
       const add_social_info_db = await socialMedia.insertOne(newSocial);
       res.send(add_social_info_db);
     });
+    /**
+     * Add New User(agent/admin)
+     */
+    app.post("/adduser", async (req, res) => {
+      const newUser = req.body;
+      const add_new_user = await usersCollection.insertOne(newUser);
+      res.send(add_new_user);
+    });
+
+    app.get("/getuser-type", async (req, res) => {
+      const query_email = req.query.email;
+      const query_type = req.query.type;
+      const query = { email: query_email, user_type: query_type };
+      const get_user = await usersCollection
+        .find(query)
+        .project({ user_type: 1 })
+        .toArray();
+      res.send(get_user);
+    });
   } finally {
   }
 }
