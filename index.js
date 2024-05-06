@@ -112,6 +112,7 @@ async function run() {
       res.send(add_social_info_db);
     });
     /**
+     * Admin Side
      * Add New User(agent/admin)
      */
     app.post("/adduser", async (req, res) => {
@@ -129,6 +130,18 @@ async function run() {
         .project({ user_type: 1 })
         .toArray();
       res.send(get_user);
+    });
+
+    app.get("/get-all-users", async (req, res) => {
+      const query = {};
+      const show_data = {
+        inital_pass: 0,
+      };
+      const get_all_users = await usersCollection
+        .find(query)
+        .project(show_data)
+        .toArray();
+      res.send(get_all_users);
     });
   } finally {
   }
