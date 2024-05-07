@@ -143,6 +143,8 @@ async function run() {
         .toArray();
       res.send(get_all_users);
     });
+
+    app.get("/get-anytype-user", async (req, res) => {});
   } finally {
   }
 }
