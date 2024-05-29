@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.send("The server is running");
+  res.send("Check-Out Backend server is running");
 });
 
 app.listen(port, () => {
